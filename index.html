@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartStore Database</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-light: #e0e7ff;
+      --success: #10b981;
+      --danger: #ef4444;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --gray-light: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .container {
+      background-color: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 800px;
+      padding: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo-icon {
+      font-size: 1.75rem;
+      color: var(--primary);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--dark);
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--gray-light);
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #3a56d4;
+    }
+
+    .footer {
+      margin-top: 2rem;
+      text-align: center;
+      color: var(--gray);
+      font-size: 0.85rem;
+    }
+
+    .footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Dashboard Styles */
+    .page-description {
+      color: var(--gray);
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .search-box {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 1rem;
+      transform: translateY(-50%);
+      color: var(--gray);
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 1px solid var(--gray-light);
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+      border-radius: 0.5rem;
+      border: 1px solid var(--gray-light);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .table th {
+      background-color: var(--primary-light);
+      color: var(--primary);
+      font-weight: 500;
+      padding: 1rem;
+    }
+
+    .table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .table tr:hover td {
+      background-color: #f8fafc;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .status-active {
+      background-color: #d1fae5;
+      color: var(--success);
+    }
+
+    .status-inactive {
+      background-color: #fee2e2;
+      color: var(--danger);
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="loginContainer">
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fas fa-database"></i>
+      </div>
+      <div class="logo-text" id="title">SmartStore Database</div>
+    </div>
+
+    <form class="login-form" method="POST" action="/login">
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Enter your smart store password" value="smart store" required>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-sign-in-alt"></i>
+        Login
+      </button>
+    </form>
+
+    <div class="footer">
+      <a id="contact" href="#" target="_blank">
+        <i class="fab fa-whatsapp"></i> Contact Support
+      </a>
+    </div>
+  </div>
+
+  <div class="container" id="dashboardContainer" style="display: none;">
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-database"></i>
+        </div>
+        <div class="logo-text" id="title">SmartStore Database</div>
+      </div>
+      <p class="page-description">Add and check your registered numbers</p>
+    </header>
+    
+    <form action="/add" method="POST">
+      <div class="form-group">
+        <input type="text" name="number" class="form-control" placeholder="Enter phone number" required />
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-plus"></i>
+          Add Number
+        </button>
+      </div>
+    </form>
+    
+    <div class="search-box">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="searchInput" class="search-input" placeholder="Search numbers..." onkeyup="filterTable()" />
+    </div>
+    
+    <div class="table-responsive">
+      <table class="table" id="numberTable">
+    
+    <footer class="footer">
+      <a id="contact" href="https://wa.me/6281290802585" target="_blank">
+        <i class="fab fa-whatsapp"></i> Contact Support
+      </a>
+    </footer>
+  </div>
+
+  <script>
+    // Toggle between login and dashboard
+    const loginContainer = document.getElementById('loginContainer');
+    const dashboardContainer = document.getElementById('dashboardContainer');
+
+    // Simulate successful login for demonstration
+    document.querySelector('.login-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent actual form submission
+      loginContainer.style.display = 'none';
+      dashboardContainer.style.display = 'block';
+    });
+
+    // Filter table function
+    function filterTable() {
+      const input = document.getElementById("searchInput");
+      const filter = input.value.toLowerCase();
+      const table = document.getElementById("numberTable");
+      const tr = table.getElementsByTagName("tr");
+
+      for (let i = 1; i < tr.length; i++) {
+        const td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          const txtValue = td.textContent || td.innerText;
+          tr[i].style.display = txtValue.toLowerCase().includes(filter) ? "" : "none";
+        }
+      }
+    }
+
+    // Set dynamic content like dashboard
+    const setContent = (id, prop, val) => {
+      const el = document.getElementById(id);
+      if (el) el[prop] = val;
+    };
+    
+    (async () => {
+      try {
+        const settings = await fetch("/set").then(res => res.json());
+        setContent("title", "textContent", settings.api_title || "SmartStore Database");
+        setContent("contact", "href", settings.contact_whatsapp || "https://wa.me/6283181145670");
+      } catch (error) {
+        console.error("Error loading settings:", error);
+        // Set default values if fetch fails
+        setContent("title", "textContent", "SmartStore Database");
+        setContent("contact", "href", "https://wa.me/6283181145670");
+      }
+    })();
+  </script>
+</body>
+</html>
