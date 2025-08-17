@@ -270,7 +270,7 @@
       <p class="page-description">Add and check your registered numbers</p>
     </header>
     
-    <form action="/add" method="POST">
+    <form action="/add" method="POST" id="addNumberForm">
       <div class="form-group">
         <input type="text" name="number" class="form-control" placeholder="Enter phone number" required />
         <button type="submit" class="btn btn-primary">
@@ -287,7 +287,17 @@
     
     <div class="table-responsive">
       <table class="table" id="numberTable">
-    
+        <thead>
+          <tr>
+            <th>Phone Number</th>
+          </tr>
+        </thead>
+        <tbody id="numberTableBody">
+          <!-- Dynamic rows will be added here -->
+        </tbody>
+      </table>
+    </div>
+
     <footer class="footer">
       <a id="contact" href="https://wa.me/6281290802585" target="_blank">
         <i class="fab fa-whatsapp"></i> Contact Support
@@ -306,6 +316,25 @@
       loginContainer.style.display = 'none';
       dashboardContainer.style.display = 'block';
     });
+
+    // Handle adding numbers
+    document.getElementById('addNumberForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent actual form submission
+      const numberInput = this.number.value;
+      if (numberInput) {
+        addNumberToTable(numberInput);
+        this.reset(); // Clear the input field
+      }
+    });
+
+    function addNumberToTable(number) {
+      const tableBody = document.getElementById('numberTableBody');
+      const newRow = document.createElement('tr');
+      const newCell = document.createElement('td');
+      newCell.textContent = number;
+      newRow.appendChild(newCell);
+      tableBody.appendChild(newRow);
+    }
 
     // Filter table function
     function filterTable() {
